@@ -17,7 +17,7 @@ fi
 sudo apt install -y ./amdgpu-install_6.4.60401-1_all.deb || true
 
 echo "==> Installing ROCm components for WSL (this may take a while)..."
-sudo amdgpu-install -y --usecase=wsl,rocm --no-dkms || true
+amdgpu-install -y --usecase=wsl,rocm --no-dkms || true
 
 echo "==> Verifying ROCm visibility of your GPU (rocminfo)..."
 if command -v rocminfo >/dev/null 2>&1; then
@@ -52,10 +52,7 @@ pip3 install --break-system-packages \
   pytorch_triton_rocm-3.2.0+rocm6.4.1.git6da9e660-cp312-cp312-linux_x86_64.whl
 
 echo "==> Adjusting WSL runtime library inside torch package..."
-location=$(python3 -c 'import sysconfig; print(sysconfig.get_paths()["purelib"])' 2>/dev/null || true)
-if [ -z "${location:-}" ]; then
-  location=$(pip show torch | awk -F": " '/Location/ {print $2}')
-fi
+location=$(pip show torch | grep Location | awk -F ": " '{print $2}')
 if [ -d "${location}/torch/lib" ]; then
   cd "${location}/torch/lib"
   rm -f libhsa-runtime64.so* || true
