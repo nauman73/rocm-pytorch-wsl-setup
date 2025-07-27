@@ -29,7 +29,7 @@ You have two ways to set up **ROCm + PyTorch on WSL2**:
 
 - **Option B — One‑command installer (fastest, end‑to‑end):**  
   Runs an automated script that performs the full setup (ROCm for WSL, Python 3.12, NumPy pin, ROCm wheels, runtime fix, and verification).  
-  **Jump to installer →** [🚀 One‑Command Installer](#-one-command-installer)  
+  **Jump to installer →** [🚀 One‑Command Installer](#-onecommand-installer)  
   _One‑liner (from WSL/Ubuntu):_
   ```bash
   curl -fsSL https://raw.githubusercontent.com/nauman73/rocm-pytorch-wsl-setup/main/install_rocm_pytorch_wsl.sh -o install.sh && bash install.sh
@@ -124,7 +124,25 @@ rm -f libhsa-runtime64.so*
 
 ---
 
-## ✅ 4) Verify the Installation
+## 🚀 One‑Command Installer
+
+This repository includes **`install_rocm_pytorch_wsl.sh`**, which automates *all* steps above.
+
+**Run locally (from repo root):**
+```bash
+bash install_rocm_pytorch_wsl.sh
+```
+
+**Or run via raw URL:**
+```bash
+curl -fsSL https://raw.githubusercontent.com/nauman73/rocm-pytorch-wsl-setup/main/install_rocm_pytorch_wsl.sh -o install.sh && bash install.sh
+```
+
+> The script installs ROCm components for WSL, Python 3.12, pins NumPy to 1.26.4, downloads the ROCm PyTorch wheels, installs them, adjusts the runtime library, and verifies the setup.
+
+---
+
+## ✅ Verify the Installation
 
 **Import check**
 ```bash
@@ -145,24 +163,6 @@ python3 -c "import torch; print(torch.cuda.get_device_name(0))"
 ```bash
 python3 -m torch.utils.collect_env
 ```
-
----
-
-## 🚀 One‑Command Installer
-
-This repository includes **`install_rocm_pytorch_wsl.sh`**, which automates *all* steps above.
-
-**Run locally (from repo root):**
-```bash
-bash install_rocm_pytorch_wsl.sh
-```
-
-**Or run via raw URL:**
-```bash
-curl -fsSL https://raw.githubusercontent.com/nauman73/rocm-pytorch-wsl-setup/main/install_rocm_pytorch_wsl.sh -o install.sh && bash install.sh
-```
-
-> The script installs ROCm components for WSL, Python 3.12, pins NumPy to 1.26.4, downloads the ROCm PyTorch wheels, installs them, adjusts the runtime library, and verifies the setup.
 
 ---
 
