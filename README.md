@@ -32,6 +32,7 @@ You have two ways to set up **ROCm + PyTorch on WSL2**:
   **Jump to installer →** [🚀 One‑Command Installer](#-onecommand-installer)  
   _One‑liner (from WSL/Ubuntu):_
   ```bash
+  cd "$HOME" && \
   curl -fsSL https://raw.githubusercontent.com/nauman73/rocm-pytorch-wsl-setup/main/install_rocm_pytorch_wsl.sh -o install.sh && \
   bash install.sh
   ```
@@ -136,6 +137,7 @@ bash install_rocm_pytorch_wsl.sh
 
 **Or run via raw URL:**
 ```bash
+cd "$HOME" && \
 curl -fsSL https://raw.githubusercontent.com/nauman73/rocm-pytorch-wsl-setup/main/install_rocm_pytorch_wsl.sh -o install.sh && \
 bash install.sh
 ```
