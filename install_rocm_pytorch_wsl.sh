@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # install_rocm_pytorch_wsl.sh
-# Set up AMD ROCm + PyTorch on Ubuntu 24.04 running in WSL2.
+# Set up AMD ROCm + PyTorch on Ubuntu 22.04 running in WSL2.
 # Run inside WSL Ubuntu. Windows-side steps (WSL enablement, AMD Adrenalin driver) are not automated here.
 
 set -euo pipefail
@@ -12,7 +12,7 @@ sudo apt install -y software-properties-common wget ca-certificates
 echo "==> (Optional) Installing AMD amdgpu-install tool..."
 cd "${HOME}"
 if [ ! -f amdgpu-install_6.4.60401-1_all.deb ]; then
-  wget -q https://repo.radeon.com/amdgpu-install/6.4.1/ubuntu/noble/amdgpu-install_6.4.60401-1_all.deb
+  wget -q https://repo.radeon.com/amdgpu-install/6.4.1/ubuntu/jammy/amdgpu-install_6.4.60401-1_all.deb
 fi
 sudo apt install -y ./amdgpu-install_6.4.60401-1_all.deb || true
 
@@ -32,24 +32,24 @@ sudo apt update -y
 sudo apt install -y python3.12 python3-pip
 
 echo "==> Pinning NumPy to 1.26.4 for current ROCm wheels compatibility..."
-pip3 install --break-system-packages --upgrade pip wheel
-pip3 install --break-system-packages numpy==1.26.4
+pip3 install --upgrade pip wheel
+pip3 install numpy==1.26.4
 
 echo "==> Downloading ROCm-compatible PyTorch wheels..."
 cd "${HOME}"
 wget -c \
-"https://repo.radeon.com/rocm/manylinux/rocm-rel-6.4.1/torch-2.6.0%2Brocm6.4.1.git1ded221d-cp312-cp312-linux_x86_64.whl" \
-"https://repo.radeon.com/rocm/manylinux/rocm-rel-6.4.1/torchvision-0.21.0%2Brocm6.4.1.git4040d51f-cp312-cp312-linux_x86_64.whl" \
-"https://repo.radeon.com/rocm/manylinux/rocm-rel-6.4.1/torchaudio-2.6.0%2Brocm6.4.1.gitd8831425-cp312-cp312-linux_x86_64.whl" \
-"https://repo.radeon.com/rocm/manylinux/rocm-rel-6.4.1/pytorch_triton_rocm-3.2.0%2Brocm6.4.1.git6da9e660-cp312-cp312-linux_x86_64.whl"
+"https://repo.radeon.com/rocm/manylinux/rocm-rel-6.4.1/torch-2.6.0%2Brocm6.4.1.git1ded221d-cp310-cp310-linux_x86_64.whl" \
+"https://repo.radeon.com/rocm/manylinux/rocm-rel-6.4.1/torchvision-0.21.0%2Brocm6.4.1.git4040d51f-cp310-cp310-linux_x86_64.whl" \
+"https://repo.radeon.com/rocm/manylinux/rocm-rel-6.4.1/pytorch_triton_rocm-3.2.0%2Brocm6.4.1.git6da9e660-cp310-cp310-linux_x86_64.whl" \
+"https://repo.radeon.com/rocm/manylinux/rocm-rel-6.4.1/torchaudio-2.6.0%2Brocm6.4.1.gitd8831425-cp310-cp310-linux_x86_64.whl"
 
 echo "==> Installing PyTorch, TorchVision, Torchaudio and Triton ROCm wheels..."
-pip3 uninstall -y --break-system-packages torch torchvision torchaudio pytorch-triton-rocm || true
-pip3 install --break-system-packages \
-  torch-2.6.0+rocm6.4.1.git1ded221d-cp312-cp312-linux_x86_64.whl \
-  torchvision-0.21.0+rocm6.4.1.git4040d51f-cp312-cp312-linux_x86_64.whl \
-  torchaudio-2.6.0+rocm6.4.1.gitd8831425-cp312-cp312-linux_x86_64.whl \
-  pytorch_triton_rocm-3.2.0+rocm6.4.1.git6da9e660-cp312-cp312-linux_x86_64.whl
+pip3 uninstall -y torch torchvision torchaudio pytorch-triton-rocm || true
+pip3 install \
+  torch-2.6.0+rocm6.4.1.git1ded221d-cp310-cp310-linux_x86_64.whl \
+  torchvision-0.21.0+rocm6.4.1.git4040d51f-cp310-cp310-linux_x86_64.whl \
+  torchaudio-2.6.0+rocm6.4.1.gitd8831425-cp310-cp310-linux_x86_64.whl \
+  pytorch_triton_rocm-3.2.0+rocm6.4.1.git6da9e660-cp310-cp310-linux_x86_64.whl
 
 echo "==> Adjusting WSL runtime library inside torch package..."
 location=$(pip show torch | grep Location | awk -F ": " '{print $2}')

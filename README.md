@@ -1,18 +1,18 @@
 # 🔧 Setting Up an AMD GPU Machine for Machine Learning with PyTorch (on WSL2)
 
-![AMD ROCm](https://img.shields.io/badge/AMD-ROCm-red) ![PyTorch](https://img.shields.io/badge/PyTorch-2.6.0-orange) ![WSL2](https://img.shields.io/badge/WSL2-Windows%2010-blue) ![Ubuntu](https://img.shields.io/badge/Ubuntu-24.04-E95420)
+![AMD ROCm](https://img.shields.io/badge/AMD-ROCm-red) ![PyTorch](https://img.shields.io/badge/PyTorch-2.6.0-orange) ![WSL2](https://img.shields.io/badge/WSL2-Windows%2010-blue) ![Ubuntu](https://img.shields.io/badge/Ubuntu-22.04-E95420)
 
 ![Banner](./banner.png)
 
 NVIDIA is the default choice for many deep‑learning workloads, but AMD is closing the gap with **ROCm** — bringing growing compatibility with popular frameworks like PyTorch.
 
-This guide documents how I set up an **AMD Radeon RX 7900 XT** on **Windows 10 + WSL2** with **Ubuntu 24.04** to run **PyTorch (ROCm build)**.
+This guide documents how I set up an **AMD Radeon RX 7900 XT** on **Windows 10 + WSL2** with **Ubuntu 22.04** to run **PyTorch (ROCm build)**.
 
 > **🖥️ Tested setup**
 >
 > • **GPU:** AMD Radeon RX 7900 XT  
 > • **OS:** Windows 10 with WSL2  
-> • **WSL Distro:** Ubuntu 24.04  
+> • **WSL Distro:** Ubuntu 22.04  
 > • **Use case:** PyTorch (ROCm backend)
 
 ---
@@ -42,9 +42,9 @@ You have two ways to set up **ROCm + PyTorch on WSL2**:
 
 ## ⚙️ 1) Pre‑Requisites (on Windows)
 
-Enable **WSL2** and install **Ubuntu 24.04**:
+Enable **WSL2** and install **Ubuntu 22.04**:
 ```bash
-wsl --install --web-download Ubuntu-24.04
+wsl --install --web-download Ubuntu-22.04
 ```
 Install **AMD Software: Adrenalin Edition 25.6.1** GPU drivers (on Windows).
 
@@ -58,7 +58,7 @@ Install **AMD Software: Adrenalin Edition 25.6.1** GPU drivers (on Windows).
 ```bash
 cd "$HOME" && \
 sudo apt update && \
-wget -c "https://repo.radeon.com/amdgpu-install/6.4.1/ubuntu/noble/amdgpu-install_6.4.60401-1_all.deb" && \
+wget -c "https://repo.radeon.com/amdgpu-install/6.4.1/ubuntu/jammy/amdgpu-install_6.4.60401-1_all.deb" && \
 sudo apt install -y ./amdgpu-install_6.4.60401-1_all.deb
 ```
 
@@ -94,27 +94,27 @@ python3 --version
 
 > **NumPy:** Current ROCm wheels for PyTorch are incompatible with **NumPy 2.x**. Pin NumPy to **1.26.4** and upgrade pip/wheel:
 ```bash
-pip3 install --upgrade --break-system-packages pip wheel && \
-pip3 install --break-system-packages numpy==1.26.4
+pip3 install --upgrade pip wheel && \
+pip3 install numpy==1.26.4
 ```
 
 ### b) 📥 Download ROCm‑compatible PyTorch wheels
 ```bash
 wget -c \
-"https://repo.radeon.com/rocm/manylinux/rocm-rel-6.4.1/torch-2.6.0%2Brocm6.4.1.git1ded221d-cp312-cp312-linux_x86_64.whl" \
-"https://repo.radeon.com/rocm/manylinux/rocm-rel-6.4.1/torchvision-0.21.0%2Brocm6.4.1.git4040d51f-cp312-cp312-linux_x86_64.whl" \
-"https://repo.radeon.com/rocm/manylinux/rocm-rel-6.4.1/pytorch_triton_rocm-3.2.0%2Brocm6.4.1.git6da9e660-cp312-cp312-linux_x86_64.whl" \
-"https://repo.radeon.com/rocm/manylinux/rocm-rel-6.4.1/torchaudio-2.6.0%2Brocm6.4.1.gitd8831425-cp312-cp312-linux_x86_64.whl"
+"https://repo.radeon.com/rocm/manylinux/rocm-rel-6.4.1/torch-2.6.0%2Brocm6.4.1.git1ded221d-cp310-cp310-linux_x86_64.whl" \
+"https://repo.radeon.com/rocm/manylinux/rocm-rel-6.4.1/torchvision-0.21.0%2Brocm6.4.1.git4040d51f-cp310-cp310-linux_x86_64.whl" \
+"https://repo.radeon.com/rocm/manylinux/rocm-rel-6.4.1/pytorch_triton_rocm-3.2.0%2Brocm6.4.1.git6da9e660-cp310-cp310-linux_x86_64.whl" \
+"https://repo.radeon.com/rocm/manylinux/rocm-rel-6.4.1/torchaudio-2.6.0%2Brocm6.4.1.gitd8831425-cp310-cp310-linux_x86_64.whl"
 ```
 
 ### c) 📦 Install PyTorch, TorchVision, Torchaudio & Triton
 ```bash
-pip3 uninstall -y --break-system-packages torch torchvision pytorch-triton-rocm || true
-pip3 install --break-system-packages \
-torch-2.6.0+rocm6.4.1.git1ded221d-cp312-cp312-linux_x86_64.whl \
-torchvision-0.21.0+rocm6.4.1.git4040d51f-cp312-cp312-linux_x86_64.whl \
-torchaudio-2.6.0+rocm6.4.1.gitd8831425-cp312-cp312-linux_x86_64.whl \
-pytorch_triton_rocm-3.2.0+rocm6.4.1.git6da9e660-cp312-cp312-linux_x86_64.whl
+pip3 uninstall -y torch torchvision pytorch-triton-rocm || true
+pip3 install \
+torch-2.6.0+rocm6.4.1.git1ded221d-cp310-cp310-linux_x86_64.whl \
+torchvision-0.21.0+rocm6.4.1.git4040d51f-cp310-cp310-linux_x86_64.whl \
+torchaudio-2.6.0+rocm6.4.1.gitd8831425-cp310-cp310-linux_x86_64.whl \
+pytorch_triton_rocm-3.2.0+rocm6.4.1.git6da9e660-cp310-cp310-linux_x86_64.whl
 ```
 
 ### d) 🛠️ Fix runtime lib for WSL
