@@ -29,18 +29,17 @@ Install **AMD Software: Adrenalin Edition 25.6.1** GPU drivers (on Windows).
 
 > Run the following inside your WSL **Ubuntu** terminal.
 
-### a) Install `amdgpu-install` tool
+### a) Install `amdgpu-install` tool (one‑liner)
 ```bash
-wget https://repo.radeon.com/amdgpu-install/6.4.1/ubuntu/noble/amdgpu-install_6.4.60401-1_all.deb
-sudo apt install ./amdgpu-install_6.4.60401-1_all.deb -y
+wget https://repo.radeon.com/amdgpu-install/6.4.1/ubuntu/noble/amdgpu-install_6.4.60401-1_all.deb && sudo apt install -y ./amdgpu-install_6.4.60401-1_all.deb
 ```
 
-### b) Install ROCm stack for WSL
+### b) Install ROCm stack for WSL (one‑liner)
 ```bash
 amdgpu-install -y --usecase=wsl,rocm --no-dkms
 ```
 
-### c) Confirm GPU is detected
+### c) Confirm GPU is detected (one‑liner)
 ```bash
 rocminfo
 ```
@@ -50,48 +49,34 @@ Look for your GPU in the output (e.g., `AMD Radeon RX 7900 XT`).
 
 ## 🧪 3) Install PyTorch (ROCm build)
 
-### a) Install Python 3.12
+### a) Install Python 3.12 (one‑liner)
 ```bash
-sudo apt update
-sudo apt install software-properties-common -y
-sudo add-apt-repository ppa:deadsnakes/ppa -y
-sudo apt update
-sudo apt install python3.12 python3-pip -y
+sudo apt update && sudo apt install -y software-properties-common && sudo add-apt-repository -y ppa:deadsnakes/ppa && sudo apt update && sudo apt install -y python3.12 python3-pip
 ```
 
-> **⚠️ Note (NumPy):** Current ROCm wheels for PyTorch are incompatible with **NumPy 2.x**. Pin NumPy to **1.26.4**:
+> **⚠️ Note (NumPy):** Pin NumPy to **1.26.4** (one‑liner):
 ```bash
 pip3 install --break-system-packages numpy==1.26.4
 ```
 
-### b) 📥 Download ROCm‑compatible PyTorch wheels
+### b) 📥 Download ROCm‑compatible PyTorch wheels (one‑liner)
 ```bash
-wget -c \
-"https://repo.radeon.com/rocm/manylinux/rocm-rel-6.4.1/torch-2.6.0%2Brocm6.4.1.git1ded221d-cp312-cp312-linux_x86_64.whl" \
-"https://repo.radeon.com/rocm/manylinux/rocm-rel-6.4.1/torchvision-0.21.0%2Brocm6.4.1.git4040d51f-cp312-cp312-linux_x86_64.whl" \
-"https://repo.radeon.com/rocm/manylinux/rocm-rel-6.4.1/torchaudio-2.6.0%2Brocm6.4.1.gitd8831425-cp312-cp312-linux_x86_64.whl" \
-"https://repo.radeon.com/rocm/manylinux/rocm-rel-6.4.1/pytorch_triton_rocm-3.2.0%2Brocm6.4.1.git6da9e660-cp312-cp312-linux_x86_64.whl"
+wget -c "https://repo.radeon.com/rocm/manylinux/rocm-rel-6.4.1/torch-2.6.0%2Brocm6.4.1.git1ded221d-cp312-cp312-linux_x86_64.whl" "https://repo.radeon.com/rocm/manylinux/rocm-rel-6.4.1/torchvision-0.21.0%2Brocm6.4.1.git4040d51f-cp312-cp312-linux_x86_64.whl" "https://repo.radeon.com/rocm/manylinux/rocm-rel-6.4.1/torchaudio-2.6.0%2Brocm6.4.1.gitd8831425-cp312-cp312-linux_x86_64.whl" "https://repo.radeon.com/rocm/manylinux/rocm-rel-6.4.1/pytorch_triton_rocm-3.2.0%2Brocm6.4.1.git6da9e660-cp312-cp312-linux_x86_64.whl"
 ```
 
-### c) 📦 Install PyTorch, TorchVision, Torchaudio & Triton (ROCm wheels)
+### c) 📦 Install PyTorch, TorchVision, Torchaudio & Triton (one‑liner)
 ```bash
-pip3 install --break-system-packages \
-torch-2.6.0+rocm6.4.1.git1ded221d-cp312-cp312-linux_x86_64.whl \
-torchvision-0.21.0+rocm6.4.1.git4040d51f-cp312-cp312-linux_x86_64.whl \
-torchaudio-2.6.0+rocm6.4.1.gitd8831425-cp312-cp312-linux_x86_64.whl \
-pytorch_triton_rocm-3.2.0+rocm6.4.1.git6da9e660-cp312-cp312-linux_x86_64.whl
+pip3 install --break-system-packages torch-2.6.0+rocm6.4.1.git1ded221d-cp312-cp312-linux_x86_64.whl torchvision-0.21.0+rocm6.4.1.git4040d51f-cp312-cp312-linux_x86_64.whl torchaudio-2.6.0+rocm6.4.1.gitd8831425-cp312-cp312-linux_x86_64.whl pytorch_triton_rocm-3.2.0+rocm6.4.1.git6da9e660-cp312-cp312-linux_x86_64.whl
 ```
 
-### d) 🛠️ Fix runtime lib for WSL
+### d) 🛠️ Fix runtime lib for WSL (one‑liner)
 ```bash
-location=$(pip show torch | grep Location | awk -F ": " '{print $2}')
-cd ${location}/torch/lib/
-rm libhsa-runtime64.so*
+location=$(pip show torch | awk -F': ' '/Location/ {print $2}'); cd "${location}/torch/lib/" && rm -f libhsa-runtime64.so*
 ```
 
 ---
 
-## ✅ 4) Verify the Installation
+## ✅ 4) Verify the Installation (each is a one‑liner)
 
 **Import check**
 ```bash
