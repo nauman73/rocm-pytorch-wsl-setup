@@ -146,7 +146,7 @@ bash install_rocm_pytorch_wsl.sh
 
 **Or run via raw URL:**
 ```bash
-curl -fsSL https://github.com/nauman73/rocm-pytorch-wsl-setup/main/install_rocm_pytorch_wsl.sh -o install.sh && bash install.sh
+curl -fsSL https://raw.githubusercontent.com/nauman73/rocm-pytorch-wsl-setup/main/install_rocm_pytorch_wsl.sh -o install.sh && bash install.sh
 ```
 
 > The script installs ROCm components for WSL, Python 3.12, pins NumPy to 1.26.4, downloads the ROCm PyTorch wheels, installs them, adjusts the runtime library, and verifies the setup.
