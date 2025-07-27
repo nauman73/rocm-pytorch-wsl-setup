@@ -33,9 +33,9 @@ Install **AMD Software: Adrenalin Edition 25.6.1** GPU drivers (on Windows).
 
 ### a) Install `amdgpu-install` tool
 ```bash
-cd ~
-sudo apt update
-wget https://repo.radeon.com/amdgpu-install/6.4.1/ubuntu/noble/amdgpu-install_6.4.60401-1_all.deb
+cd "$HOME" && \
+sudo apt update && \
+wget -c "https://repo.radeon.com/amdgpu-install/6.4.1/ubuntu/noble/amdgpu-install_6.4.60401-1_all.deb" && \
 sudo apt install -y ./amdgpu-install_6.4.60401-1_all.deb
 ```
 
@@ -56,18 +56,18 @@ Look for your GPU in the output (e.g., `AMD Radeon RX 7900 XT`).
 
 ### a) Install Python 3.12
 ```bash
-cd ~
-sudo apt update
-sudo apt install -y software-properties-common
-sudo add-apt-repository -y ppa:deadsnakes/ppa
-sudo apt update
-sudo apt install -y python3.12 python3-pip
+cd "$HOME" && \
+sudo apt update && \
+sudo apt install -y software-properties-common && \
+sudo add-apt-repository -y ppa:deadsnakes/ppa && \
+sudo apt update && \
+sudo apt install -y python3.12 python3-pip && \
 python3 --version
 ```
 
 > **NumPy:** Current ROCm wheels for PyTorch are incompatible with **NumPy 2.x**. Pin NumPy to **1.26.4** and upgrade pip/wheel:
 ```bash
-pip3 install --upgrade --break-system-packages pip wheel
+pip3 install --upgrade --break-system-packages pip wheel && \
 pip3 install --break-system-packages numpy==1.26.4
 ```
 
@@ -92,8 +92,8 @@ pytorch_triton_rocm-3.2.0+rocm6.4.1.git6da9e660-cp312-cp312-linux_x86_64.whl
 
 ### d) 🛠️ Fix runtime lib for WSL
 ```bash
-location=$(pip show torch | awk -F': ' '/Location/ {print $2}')
-cd "${location}/torch/lib/"
+location="$(pip show torch | awk -F': ' '/Location/ {print $2}')" && \
+cd "${location}/torch/lib/" && \
 rm -f libhsa-runtime64.so*
 ```
 
