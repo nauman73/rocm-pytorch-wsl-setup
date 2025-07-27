@@ -17,6 +17,27 @@ This guide documents how I set up an **AMD Radeon RX 7900 XT** on **Windows 10 +
 
 ---
 
+
+
+### 🧭 Choose Your Setup Path
+
+You have two ways to set up **ROCm + PyTorch on WSL2**:
+
+- **Option A — Step‑by‑step (recommended if you want control/understanding):**  
+  Follow the detailed guide below, starting from Windows pre‑requisites and then installing ROCm and PyTorch in WSL.  
+  **Start here →** [⚙️ 1) Pre‑Requisites (on Windows)](#-1-pre-requisites-on-windows) → [🔧 2) Install ROCm in WSL (Ubuntu)](#-2-install-rocm-in-wsl-ubuntu) → [🧪 3) Install PyTorch (ROCm build)](#-3-install-pytorch-rocm-build).
+
+- **Option B — One‑command installer (fastest, end‑to‑end):**  
+  Runs an automated script that performs the full setup (ROCm for WSL, Python 3.12, NumPy pin, ROCm wheels, runtime fix, and verification).  
+  **Jump to installer →** [🚀 One‑Command Installer](#-one-command-installer)  
+  _One‑liner (from WSL/Ubuntu):_
+  ```bash
+  curl -fsSL https://raw.githubusercontent.com/nauman73/rocm-pytorch-wsl-setup/main/install_rocm_pytorch_wsl.sh -o install.sh && bash install.sh
+  ```
+  *(This script is included in the repo as `install_rocm_pytorch_wsl.sh`.)*
+
+> **Tip:** Use **Option B** if you just want a working setup quickly. Choose **Option A** if you plan to customize versions or want to troubleshoot along the way.
+
 ## ⚙️ 1) Pre‑Requisites (on Windows)
 
 Enable **WSL2** and install **Ubuntu 24.04**:
